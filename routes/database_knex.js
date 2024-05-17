@@ -13,12 +13,4 @@ const knex = Knex({
 
 Model.knex(knex);
 
-class User extends Model {
-  static get tableName() {
-    return 'User';
-  }
-
-  // Other model options go here
-}
-
-module.exports = User;
+module.exports = Model;

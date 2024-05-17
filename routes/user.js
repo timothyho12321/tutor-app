@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path'); 
 const router = express.Router();
 const db = require('./db'); 
-const User = require('../models/user'); // Assuming you have a User model defined
+const User = require('../models/User'); // Assuming you have a User model defined
 
 
 router.get('/createuser', (req, res) => {

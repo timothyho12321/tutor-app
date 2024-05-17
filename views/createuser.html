@@ -9,11 +9,11 @@
         .center-card {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             height: 100vh;
         }
         .card {
-            height: 90%;
+            height: auto;
             width: 60%;
         }
     </style>
@@ -21,8 +21,20 @@
 <body>
     <div class="center-card">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body ">
+                
+                <div class="d-flex justify-content-between align-items-start">
+                    <h5 class="card-title">
+                        Create User 
+                    </h5>
+                    
+                        <a href="../login/loginuser" class="btn btn-primary">Go to Login</a>
+                    
+                </div>
+                
+                
                 <form action="/user/createuser" method="post">
+                    
                     <div class="form-group">
                         <label for="first_name">First Name</label>
                         <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name">
