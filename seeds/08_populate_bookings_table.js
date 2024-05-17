@@ -15,11 +15,17 @@ exports.seed = async function(knex) {
         throw new Error('Not enough lessons in the Lesson table. Please make sure there are at least 5 lessons before running this seed script.');
     }
 
+    
     // Inserts seed entries
-    const bookings = Array.from({length: 5}).map(() => ({
+    const bookings = Array.from({length: 5}).map(() => {
+
+        const date = faker.date.future();
+        const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+
+        return{
         day: faker.date.weekday(),
         date: faker.date.future(),
-        time: faker.date.future().toLocaleTimeString(),
+        time: time,
         mode: faker.random.arrayElement(['Online', 'Offline']),
         type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
         status: faker.random.arrayElement(['Scheduled', 'Completed', 'Cancelled']),
@@ -35,7 +41,8 @@ exports.seed = async function(knex) {
         payor: faker.name.findName(),
         feedback: faker.lorem.paragraph(),
         lesson_id: faker.random.arrayElement(lessonIds), // Pick a random lesson ID
-    }));
+        };
+    });
 
     return knex('Booking').insert(bookings);
 };

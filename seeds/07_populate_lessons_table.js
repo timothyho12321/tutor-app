@@ -17,10 +17,14 @@ exports.seed = async function(knex) {
     }
 
     // Inserts seed entries
-    const lessons = Array.from({length: 5}).map(() => ({
+    const lessons = Array.from({length: 5}).map(() => {
+        const date = faker.date.future();
+        const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+
+        return{
         day: faker.date.weekday(),
         date: faker.date.future(),
-        time: faker.date.future().toLocaleTimeString(),
+        time: time,
         mode: faker.random.arrayElement(['Online', 'Offline']),
         type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
         status: faker.random.arrayElement(['Scheduled', 'Completed', 'Cancelled']),
@@ -30,7 +34,8 @@ exports.seed = async function(knex) {
         address: faker.address.streetAddress(),
         postal_code: faker.address.zipCode(),
         subject_id: faker.random.arrayElement(subjectIds), // Pick a random subject ID
-    }));
+        };
+    });
 
     return knex('Lesson').insert(lessons);
 };
