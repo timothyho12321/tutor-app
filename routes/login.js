@@ -5,8 +5,8 @@ const db = require('./db');
 const User = require('../models/user'); // Assuming you have a User model defined
 
 
-router.get('/createuser', (req, res) => {
-    res.sendFile(path.join(__dirname, '..','views', 'createuser.html'));
+router.get('/loginuser', (req, res) => {
+    res.sendFile(path.join(__dirname, '..','views', 'login.html'));
 });
 
 router.post('/createuser', async (req, res) => {

@@ -4,13 +4,14 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const databaseRouter = require('./routes/db');
 const userRouter = require('./routes/user');
-
+const loginRouter = require('./routes/login');
 
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/user', userRouter);
+app.use('/login', loginRouter);
 
 app.listen('3080', () => {
     console.log('Server started on http://localhost:3080')
