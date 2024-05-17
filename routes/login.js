@@ -19,8 +19,8 @@ router.get('/testlogindatabase', (req, res) => {
 });
 
 router.get('/loginuser', (req, res) => {
-    res.sendFile(path.join(__dirname, '..','views', 'login.html'));
-    
+    // res.sendFile(path.join(__dirname, '..','views', 'login.ejs'));
+    res.render('login',{ messages: req.flash() });
 });
 
 router.post('/loginuser', async (req, res) => {
@@ -31,18 +31,23 @@ router.post('/loginuser', async (req, res) => {
     
     };
 
+    // console.log("0 "+req.body);
+    // console.log("1 "+loginUser.username);
+    // console.log("2 "+loginUser.password);
     let user = await User.findOne({username: loginUser.username, password: loginUser.password});
+    // console.log(user);
 
     if(user) {
         req.session.userid = user._id;
         req.session.role = user.role;
         req.session.username = user.username;
-        // res.redirect('/login/success');
-        res.send("hi");
+        res.redirect('/login/success');
+        // res.send("hi");
     } else {
         req.flash('error', 'Invalid username or password');
-        // res.redirect('/loginuser');
-        res.send("try again");
+       
+        // res.redirect('/login/loginuser');
+        res.render('login', { messages: req.flash() });
     }
       
 });
@@ -50,13 +55,11 @@ router.post('/loginuser', async (req, res) => {
 
 router.get('/success', async (req, res) => {
     if (req.session.role == 'teacher') {
-        let teacher_profile_exists = await Teacher.findOne({user_id: req.session.userid});
-
-        if (teacher_profile_exists) {
-            res.sendFile(path.resolve('views/success_teacher.html'));
-        } else {
-            res.sendFile(path.resolve('views/teacher_profile.html'));
-        }
+        res.sendFile(path.resolve('../views/home_teacher.html'));
+        
+    } else if (req.session.role == 'student') {
+        res.sendFile(path.resolve('../views/home_student.html'));
+        
     }
 });
 

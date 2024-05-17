@@ -6,9 +6,14 @@ const session = require('express-session');
 const databaseRouter = require('./routes/db');
 const userRouter = require('./routes/user');
 const loginRouter = require('./routes/login');
-
+const flash = require('connect-flash');
 
 const app = express();
+
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
+
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
@@ -18,6 +23,7 @@ app.use(session({
     cookie: { secure: false } // set to true if you're using https
   }));
 
+app.use(flash());
   
 app.use('/user', userRouter);
 app.use('/login', loginRouter);

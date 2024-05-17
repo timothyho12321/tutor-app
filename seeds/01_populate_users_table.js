@@ -16,7 +16,7 @@ exports.seed = function(knex) {
         address: faker.address.streetAddress(),
         handphone_num: faker.phone.phoneNumber(),
         email: faker.internet.email(),
-        role: faker.random.arrayElement(['admin', 'user', 'guest']),
+        role: faker.random.arrayElement(['teacher', 'student']),
     }));
 
     return knex('User').insert(users);
