@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .center-card {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+        }
+        .card {
+            height: auto;
+            width: 60%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Teacher Home</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/set-profile">Set Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/set-lesson">Set Lesson</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/paid-lesson">Paid Lesson</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="center-card">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Calendar</h5>
+                <!-- Placeholder for calendar. You'll need to generate this with JavaScript or a server-side language. -->
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
