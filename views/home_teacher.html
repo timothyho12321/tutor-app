@@ -5,6 +5,8 @@
     <title>Teacher Home</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" type="text/css" rel="stylesheet" />
+
     <style>
         .center-card {
             display: flex;
@@ -14,7 +16,7 @@
         }
         .card {
             height: auto;
-            width: 60%;
+            width: 90%;
         }
     </style>
 </head>
@@ -35,17 +37,71 @@
             </ul>
         </div>
     </nav>
-    <div class="center-card">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Calendar</h5>
-                <!-- Placeholder for calendar. You'll need to generate this with JavaScript or a server-side language. -->
-                <div id="calendar"></div>
+    
+
+    <div id="bootstrapModalFullCalendar"></div>
+
+    <div id="fullCalModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+                    <h4 id="modalTitle" class="modal-title"></h4>
+                </div>
+                <div id="modalBody" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <a class="btn btn-primary" id="eventUrl" target="_blank">Event Page</a>
+                </div>
             </div>
         </div>
     </div>
-    <!-- Bootstrap JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#bootstrapModalFullCalendar').fullCalendar({
+                header: {
+                    left: '',
+                    center: 'prev title next',
+                    right: ''
+                },
+                eventClick:  function(event, jsEvent, view) {
+                    $('#modalTitle').html(event.title);
+                    $('#modalBody').html(event.description);
+                    $('#eventUrl').attr('href',event.url);
+                    $('#fullCalModal').modal();
+                    return false;
+                },
+                dayClick: function(date, jsEvent, view) {
+                // This will be triggered when a day cell is clicked
+                // You can show a modal here where the user can input the event details
+                // For example:
+                alert('Clicked on: ' + date.format());
+
+                // To add an event to the calendar use the following code:
+                // $('#bootstrapModalFullCalendar').fullCalendar('renderEvent', {
+                //     title: 'New Event',
+                //     start: date,
+                //     allDay: true
+                // });
+                },
+                events:
+                [
+                   {
+                      "title":"Free Pizza",
+                      "allday":"false",
+                      "description":"<p>This is just a fake description for the Free Pizza.</p><p>Nothing to see!</p>",
+                      "start":moment().subtract('days',14),
+                      "end":moment().subtract('days',14),
+                      "url":"http://www.mikesmithdev.com/blog/coding-without-music-vs-coding-with-music/"
+                   }]
+                });
+        });
+    </script>
 </body>
 </html>

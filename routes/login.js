@@ -55,10 +55,10 @@ router.post('/loginuser', async (req, res) => {
 
 router.get('/success', async (req, res) => {
     if (req.session.role == 'teacher') {
-        res.sendFile(path.resolve('/views/home_teacher.html'));
+        res.sendFile(path.resolve('views/home_teacher.html'));
         
     } else if (req.session.role == 'student') {
-        res.sendFile(path.resolve('/views/home_student.html'));
+        res.sendFile(path.resolve('views/home_student.html'));
         
     }
 });
