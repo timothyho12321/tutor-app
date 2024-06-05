@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" type="text/css" rel="stylesheet" />
 
+    
     <style>
         .center-card {
             display: flex;
@@ -21,10 +22,17 @@
     </style>
 </head>
 <body>
+    
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Teacher Home</a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+        <a class="navbar-brand" href="#">Teacher</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            
                 <li class="nav-item">
                     <a class="nav-link" href="/set-profile">Set Profile</a>
                 </li>
@@ -37,70 +45,42 @@
             </ul>
         </div>
     </nav>
+
     
-
-    <div id="bootstrapModalFullCalendar"></div>
-
-    <div id="fullCalModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
-                    <h4 id="modalTitle" class="modal-title"></h4>
-                </div>
-                <div id="modalBody" class="modal-body"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <a class="btn btn-primary" id="eventUrl" target="_blank">Event Page</a>
+        <div class="center-card">
+            <div class="card">
+                <div class="card-body ">
+                    <div id="bootstrapModalFullCalendar"></div>
                 </div>
             </div>
         </div>
-    </div>
     
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
         $(document).ready(function() {
             $('#bootstrapModalFullCalendar').fullCalendar({
                 header: {
-                    left: '',
-                    center: 'prev title next',
-                    right: ''
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
                 },
-                eventClick:  function(event, jsEvent, view) {
-                    $('#modalTitle').html(event.title);
-                    $('#modalBody').html(event.description);
-                    $('#eventUrl').attr('href',event.url);
-                    $('#fullCalModal').modal();
-                    return false;
+                defaultView: 'month',
+                editable: true,
+                events: events,
+                eventClick: function(event) {
+                    if (event.url) {
+                        window.open(event.url);
+                        return false;
+                    }
                 },
-                dayClick: function(date, jsEvent, view) {
-                // This will be triggered when a day cell is clicked
-                // You can show a modal here where the user can input the event details
-                // For example:
-                alert('Clicked on: ' + date.format());
-
-                // To add an event to the calendar use the following code:
-                // $('#bootstrapModalFullCalendar').fullCalendar('renderEvent', {
-                //     title: 'New Event',
-                //     start: date,
-                //     allDay: true
-                // });
-                },
-                events:
-                [
-                   {
-                      "title":"Free Pizza",
-                      "allday":"false",
-                      "description":"<p>This is just a fake description for the Free Pizza.</p><p>Nothing to see!</p>",
-                      "start":moment().subtract('days',14),
-                      "end":moment().subtract('days',14),
-                      "url":"http://www.mikesmithdev.com/blog/coding-without-music-vs-coding-with-music/"
-                   }]
-                });
+                dayClick: function(date, allDay, jsEvent, view) {
+                    alert('Clicked on: ' + date.format());
+                }
+            });
         });
     </script>
 </body>
