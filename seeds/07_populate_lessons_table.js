@@ -11,6 +11,12 @@ exports.seed = async function(knex) {
     const subjects = await knex('Subject').select('id');
     const subjectIds = subjects.map(subject => subject.id);
 
+    const teachers = await knex('Teacher').select('id');
+    const teacherIds = teachers.map(teacher => teacher.id);
+
+    const students = await knex('Subject').select('id');
+    const studentIds = students.map(student => student.id);
+
     // Check if there are enough subject IDs
     if (subjectIds.length < 5) {
         throw new Error('Not enough subjects in the Subject table. Please make sure there are at least 5 subjects before running this seed script.');
@@ -34,7 +40,10 @@ exports.seed = async function(knex) {
         address: faker.address.streetAddress(),
         postal_code: faker.address.zipCode(),
         subject_id: faker.random.arrayElement(subjectIds), // Pick a random subject ID
-        };
+        teacher_id: faker.random.arrayElement(teacherIds), // Pick a random subject ID
+        student_id: faker.random.arrayElement(studentIds), // Pick a random subject ID
+        
+    };
     });
 
     return knex('Lesson').insert(lessons);
