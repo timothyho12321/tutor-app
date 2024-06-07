@@ -16,6 +16,6 @@ exports.seed = function(knex) {
         budget: faker.datatype.number({min: 500, max: 1000}),
     }));
 
-    return knex('Subject').insert(subjects);
+    return knex('subjects').insert(subjects);
         
 };

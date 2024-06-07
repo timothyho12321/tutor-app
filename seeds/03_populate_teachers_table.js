@@ -8,7 +8,7 @@ const faker = require('faker');
 exports.seed = async function(knex) {
     
     // Get all user IDs
-    const users = await knex('User').select('id');
+    const users = await knex('users').select('id');
     const userIds = users.map(user => user.id);
 
     
@@ -22,5 +22,15 @@ exports.seed = async function(knex) {
         user_id: faker.random.arrayElement(userIds), // Pick a random user ID
     }));
 
-    return knex('Teacher').insert(teachers);
+    teachers.push({ 
+        name: faker.name.findName(),
+        description: faker.lorem.paragraph(),
+        years_experience: faker.datatype.number({min: 1, max: 20}),
+        link: faker.internet.url(),
+        achievement: faker.lorem.sentence(),
+        user_id: 6, // Pick a random user ID
+    
+    });
+
+    return knex('teachers').insert(teachers);
 };

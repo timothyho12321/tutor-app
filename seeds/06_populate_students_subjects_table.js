@@ -8,10 +8,10 @@ const faker = require('faker');
 exports.seed = async function(knex) {
     
     // Get all user IDs
-    const students = await knex('Student').select('id');
+    const students = await knex('students').select('id');
     const studentIds = students.map(student => student.id);
      // Get all user IDs
-    const subjects = await knex('Subject').select('id');
+    const subjects = await knex('subjects').select('id');
     const subjectIds = subjects.map(subject => subject.id);
     
     // Inserts seed entries
@@ -21,5 +21,5 @@ exports.seed = async function(knex) {
         subject_id: faker.random.arrayElement(subjectIds), // Pick a random user ID
     }));
    
-    return knex('Student_Subject').insert(records);
+    return knex('students_subjects').insert(records);
 };

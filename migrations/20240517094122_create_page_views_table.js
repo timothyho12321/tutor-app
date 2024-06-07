@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema.createTable('Page_View', function(table) {
+    return knex.schema.createTable('page_views', function(table) {
         table.increments('id');
         table.string('session_id', 255);
         table.datetime('time_entered');
@@ -17,5 +17,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    return knex.schema.dropTable('Page_View');
+    return knex.schema.dropTable('page_views');
 };

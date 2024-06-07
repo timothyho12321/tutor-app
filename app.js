@@ -3,7 +3,6 @@ const mysql = require('mysql');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session'); 
-const databaseRouter = require('./routes/db');
 const userRouter = require('./routes/user');
 const loginRouter = require('./routes/login');
 const flash = require('connect-flash');

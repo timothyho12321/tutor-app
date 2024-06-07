@@ -3,11 +3,11 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema.alterTable('Lesson', function(table) {
+    return knex.schema.alterTable('lessons', function(table) {
         table.integer('teacher_id').unsigned().notNullable();
-        table.foreign('teacher_id').references('id').inTable('Teacher');
+        table.foreign('teacher_id').references('id').inTable('teachers');
         table.integer('student_id').unsigned().notNullable();
-        table.foreign('student_id').references('id').inTable('Student');
+        table.foreign('student_id').references('id').inTable('students');
     });
 };
 
@@ -16,7 +16,7 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    return knex.schema.alterTable('Lesson', function(table) {
+    return knex.schema.alterTable('lessons', function(table) {
         table.dropForeign('teacher_id');
         table.dropColumn('teacher_id');
         table.dropForeign('student_id');

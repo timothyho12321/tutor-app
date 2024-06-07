@@ -7,7 +7,7 @@ const faker = require('faker');
  */
 exports.seed = async function(knex) {
     // Get all lesson IDs
-    const lessons = await knex('Lesson').select('id');
+    const lessons = await knex('lessons').select('id');
     const lessonIds = lessons.map(lesson => lesson.id);
 
     // Check if there are enough lesson IDs
@@ -44,5 +44,5 @@ exports.seed = async function(knex) {
         };
     });
 
-    return knex('Booking').insert(bookings);
+    return knex('bookings').insert(bookings);
 };

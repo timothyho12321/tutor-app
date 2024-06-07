@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema.createTable('Booking', function(table) {
+    return knex.schema.createTable('bookings', function(table) {
         table.increments('id');
         table.string('day', 45);
         table.date('date');
@@ -30,5 +30,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    return knex.schema.dropTable('Booking');
+    return knex.schema.dropTable('bookings');
 };

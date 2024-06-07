@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path'); 
 const router = express.Router();
-const db = require('./db'); 
 const User = require('../models/User'); // Assuming you have a User model defined
 
 

@@ -3,9 +3,9 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema.alterTable('Booking', function(table) {
+    return knex.schema.alterTable('bookings', function(table) {
         table.integer('lesson_id').unsigned().notNullable();
-        table.foreign('lesson_id').references('id').inTable('Lesson');
+        table.foreign('lesson_id').references('id').inTable('lessons');
     });
 };
 
@@ -14,7 +14,7 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    return knex.schema.alterTable('Booking', function(table) {
+    return knex.schema.alterTable('bookings', function(table) {
         table.dropForeign('lesson_id');
         table.dropColumn('lesson_id');
     });

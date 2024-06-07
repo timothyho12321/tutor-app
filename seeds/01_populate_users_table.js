@@ -19,5 +19,17 @@ exports.seed = function(knex) {
         role: faker.random.arrayElement(['teacher', 'student']),
     }));
 
-    return knex('User').insert(users);
+    users.push({
+        first_name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
+        dob: faker.date.past(),
+        username: faker.internet.userName(),
+        password: faker.internet.password(),
+        address: faker.address.streetAddress(),
+        handphone_num: faker.phone.phoneNumber(),
+        email: faker.internet.email(),
+        role: 'teacher'
+    })
+
+    return knex('users').insert(users);
 };

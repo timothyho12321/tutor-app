@@ -1,12 +1,14 @@
 const express = require('express');
 const path = require('path'); 
 const router = express.Router();
-const db = require('./db'); 
 const User = require('../models/User'); // Assuming you have a User model defined
 const Teacher = require('../models/Teacher');
+const Booking = require('../models/Booking');
+const Lesson = require('../models/Lesson');
 
-
-
+//const knexConfig = require('knex');
+// const knexConfig = require('../knexfile'); // adjust the path to your knexfile.js
+// const knex = require('knex')(knexConfig);
 
 router.get('/testlogindatabase', (req, res) => {
     res.send("hi");
@@ -17,6 +19,25 @@ router.get('/testlogindatabase', (req, res) => {
 
     testDatabaseConnection();
 });
+
+// not working
+// router.get('/clearalltables', async (req, res) => {
+    
+//    async function emptyTables(knex) {
+//     await knex('users').truncate();
+//     await knex('subjects').truncate();
+//     await knex('teachers').truncate();
+//     await knex('students').truncate();
+//     await knex('subjects_teachers').truncate();
+//     await knex('students_subjects').truncate();
+//     await knex('lessons').truncate();
+//     await knex('bookings').truncate();
+//     // Add more tables as needed
+//     }
+
+//     await emptyTables(knex);
+//     res.send("tables cleared");
+// });
 
 router.get('/loginuser', (req, res) => {
     // res.sendFile(path.join(__dirname, '..','views', 'login.ejs'));
@@ -38,7 +59,7 @@ router.post('/loginuser', async (req, res) => {
     // console.log(user);
 
     if(user) {
-        req.session.userid = user._id;
+        req.session.userid = user.id;
         req.session.role = user.role;
         req.session.username = user.username;
         res.redirect('/login/success');
@@ -57,23 +78,15 @@ router.get('/success', async (req, res) => {
     if (req.session.role == 'teacher') {
         //res.sendFile(path.resolve('views/home_teacher.html'));
          // Fetch scheduled lessons from the database
-
-         let teacherId = await Teacher.query().findOne({user_id: req.session.userid});
-         console.log("check "+teacherId);
+         //console.log("check1 "+req.session.userid);
+         let teacher = await Teacher.query().findOne({user_id: req.session.userid});
+         //console.log("check2 "+teacherId);
          let scheduledLessons;
-         if (teacherId) {
-             scheduledLessons = await Booking.findAll({
-                 include: [{
-                     model: Lesson,
-                     as: 'lesson',
-                     where: { teacher_id: teacher.id },
-                     include: [{
-                         model: Teacher,
-                         as: 'teacher'
-                     }]
-                 }]
-             });
+         if (teacher) {
+                scheduledLessons = await Booking.query().withGraphJoined('lesson.teacher').where('lesson.teacher.id', teacher.id);
+        
             }
+        console.log("check3 "+scheduledLessons);
          // Convert the lessons to the format expected by FullCalendar
          //let events = scheduledLessons.map(lesson => ({
          //  title: lesson.title,

@@ -8,13 +8,13 @@ const faker = require('faker');
 
 exports.seed = async function(knex) {
     // Get all subject IDs
-    const subjects = await knex('Subject').select('id');
+    const subjects = await knex('subjects').select('id');
     const subjectIds = subjects.map(subject => subject.id);
 
-    const teachers = await knex('Teacher').select('id');
+    const teachers = await knex('teachers').select('id');
     const teacherIds = teachers.map(teacher => teacher.id);
 
-    const students = await knex('Subject').select('id');
+    const students = await knex('students').select('id');
     const studentIds = students.map(student => student.id);
 
     // Check if there are enough subject IDs
@@ -46,5 +46,5 @@ exports.seed = async function(knex) {
     };
     });
 
-    return knex('Lesson').insert(lessons);
+    return knex('lessons').insert(lessons);
 };
