@@ -2,7 +2,7 @@ const Model = require('../routes/database_knex');
 
 class User extends Model {
   static get tableName() {
-    return 'User';
+    return 'users';
   }
 
   static async findOne(condition){

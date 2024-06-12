@@ -20,11 +20,11 @@ exports.seed = function(knex) {
     }));
 
     users.push({
-        first_name: faker.name.firstName(),
-        last_name: faker.name.lastName(),
+        first_name: "Sam",
+        last_name: "Chua",
         dob: faker.date.past(),
-        username: faker.internet.userName(),
-        password: faker.internet.password(),
+        username: "sam",
+        password: "abc123",
         address: faker.address.streetAddress(),
         handphone_num: faker.phone.phoneNumber(),
         email: faker.internet.email(),

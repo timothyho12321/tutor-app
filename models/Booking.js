@@ -17,7 +17,7 @@ class Booking extends Model {
         modelClass: Lesson,
         join: {
           from: 'bookings.lesson_id',
-          to: 'Lesson.id'
+          to: 'lessons.id'
         }
       }
     };

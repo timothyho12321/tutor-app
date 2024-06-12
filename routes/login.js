@@ -21,23 +21,7 @@ router.get('/testlogindatabase', (req, res) => {
 });
 
 // not working
-// router.get('/clearalltables', async (req, res) => {
-    
-//    async function emptyTables(knex) {
-//     await knex('users').truncate();
-//     await knex('subjects').truncate();
-//     await knex('teachers').truncate();
-//     await knex('students').truncate();
-//     await knex('subjects_teachers').truncate();
-//     await knex('students_subjects').truncate();
-//     await knex('lessons').truncate();
-//     await knex('bookings').truncate();
-//     // Add more tables as needed
-//     }
-
-//     await emptyTables(knex);
-//     res.send("tables cleared");
-// });
+// sssssss
 
 router.get('/loginuser', (req, res) => {
     // res.sendFile(path.join(__dirname, '..','views', 'login.ejs'));
@@ -83,7 +67,7 @@ router.get('/success', async (req, res) => {
          //console.log("check2 "+teacherId);
          let scheduledLessons;
          if (teacher) {
-                scheduledLessons = await Booking.query().withGraphJoined('lesson.teacher').where('lesson.teacher.id', teacher.id);
+                scheduledLessons = await Booking.query().withGraphJoined('lessons.teacher').where('lessons.teacher.id', teacher.id);
         
             }
         console.log("check3 "+scheduledLessons);

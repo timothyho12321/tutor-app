@@ -44,5 +44,30 @@ exports.seed = async function(knex) {
         };
     });
 
+    const date = faker.date.future();
+    const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+
+    bookings.push({
+        day: faker.date.weekday(),
+        date: faker.date.future(),
+        time: time,
+        mode: faker.random.arrayElement(['Online', 'Offline']),
+        type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
+        status: faker.random.arrayElement(['Scheduled', 'Completed', 'Cancelled']),
+        is_available: faker.datatype.boolean() ? 1 : 0,
+        rate: faker.datatype.number({min: 50, max: 200}),
+        pax: faker.datatype.number({min: 1, max: 20}),
+        address: faker.address.streetAddress(),
+        postal_code: faker.address.zipCode(),
+        link: faker.internet.url(),
+        is_paid: faker.datatype.boolean() ? 1 : 0,
+        paid_amount: faker.datatype.number({min: 50, max: 200}),
+        paid_date: faker.date.past(),
+        payor: faker.name.findName(),
+        feedback: faker.lorem.paragraph(),
+        lesson_id: 6, // Pick a random lesson ID
+        
+    })
+
     return knex('bookings').insert(bookings);
 };
