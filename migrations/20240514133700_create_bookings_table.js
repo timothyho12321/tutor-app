@@ -5,9 +5,12 @@
 exports.up = function(knex) {
     return knex.schema.createTable('bookings', function(table) {
         table.increments('id');
+        table.string('name', 45);
+        table.string('subject', 45);
         table.string('day', 45);
         table.date('date');
         table.time('time');
+        table.integer('duration');
         table.string('mode', 45);
         table.string('type',45);
         table.string('status',45);

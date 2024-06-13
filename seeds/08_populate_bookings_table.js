@@ -23,9 +23,12 @@ exports.seed = async function(knex) {
         const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
         return{
+        name: faker.random.arrayElement(['Lesson A', 'Lesson B', 'Lesson C', 'Lesson D']),
+        subject: faker.random.arrayElement(['Math', 'Science', 'English', 'History', 'Art']),
         day: faker.date.weekday(),
         date: faker.date.future(),
         time: time,
+        duration: faker.datatype.number({min: 60, max: 240}),
         mode: faker.random.arrayElement(['Online', 'Offline']),
         type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
         status: faker.random.arrayElement(['Scheduled', 'Completed', 'Cancelled']),
@@ -48,9 +51,12 @@ exports.seed = async function(knex) {
     const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
     bookings.push({
+        name: 'Lesson A',
+        subject: 'Math',
         day: faker.date.weekday(),
         date: faker.date.future(),
-        time: time,
+        time: "14:00",
+        duration:  60,
         mode: faker.random.arrayElement(['Online', 'Offline']),
         type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
         status: faker.random.arrayElement(['Scheduled', 'Completed', 'Cancelled']),

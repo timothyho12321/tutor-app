@@ -64,25 +64,62 @@ router.get('/success', async (req, res) => {
          // Fetch scheduled lessons from the database
          //console.log("check1 "+req.session.userid);
          let teacher = await Teacher.query().findOne({user_id: req.session.userid});
-         //console.log("check2 "+teacherId);
-         let scheduledLessons;
+         console.log("check2 "+teacher.id);
+
+
+         let lessons;
          if (teacher) {
-                scheduledLessons = await Booking.query().withGraphJoined('lessons.teacher').where('lessons.teacher.id', teacher.id);
-        
+            lessons = await Lesson.query().where('lessons.teacher_id', teacher.id);
+            // lessons are the id of lessons that the teacher is teaching
+            // can be multiple lessons
+        }
+         
+         for (let oneLesson of lessons) {
+
+            console.log("check3 "+oneLesson.id);
+           }
+        let scheduledLessons = [];
+        if (lessons){
+            for (let lesson of lessons) {
+                let bookings = await Booking.query().where('bookings.lesson_id', lesson.id);
+                scheduledLessons.push(...bookings);
             }
-        console.log("check3 "+scheduledLessons);
+        }
+
+        for (let singleLesson of scheduledLessons) {
+
+         console.log("check4 "+singleLesson.id);
+         console.log("check5 "+singleLesson.date);
+         console.log("check6 "+singleLesson.time);
+        }
+
+        //not working retrieve from belongs to with two tables
+         //let scheduledLessons;
+        // if (teacher) {
+        //        scheduledLessons = await Booking.query().withGraphJoined('lessons.teacher').where('lessons.teacher.id', teacher.id);
+        
+        //    }
+        //console.log("check3 "+scheduledLessons);
          // Convert the lessons to the format expected by FullCalendar
-         //let events = scheduledLessons.map(lesson => ({
-         //  title: lesson.title,
-         //    start: lesson.start_time,
-         //    end: lesson.end_time,
-         //    url: '/lesson/' + lesson.id
-         //}));
+         let events = scheduledLessons.map(lesson => {
+            let date = new Date(lesson.date);
+            let [hours, minutes] = lesson.time.split(':').map(Number); // Split the time into hours and minutes
+        
+            // Adjust the date object to Singapore's timezone
+            date.setHours(hours + 8); // Singapore is 8 hours ahead of UTC
+            date.setMinutes(minutes);
+        
+            return {
+                start: date, // Combine the date and time into a single Date object
+                title: lesson.name,
+                url: '/lesson/' + lesson.id
+         };
+         });
  
          // Send the HTML file and the events data
-         res.render('home_teacher');
-         //res.render('home_teacher', { events: JSON.stringify(events) });
-     
+         //res.sendFile(path.resolve('views/home_teacher_html.html'));
+         res.render('home_teacher', { events: JSON.stringify(events) });
+         
     } else if (req.session.role == 'student') {
         res.sendFile(path.resolve('views/home_student.html'));
         
