@@ -64,7 +64,7 @@ router.get('/success', async (req, res) => {
          // Fetch scheduled lessons from the database
          //console.log("check1 "+req.session.userid);
          let teacher = await Teacher.query().findOne({user_id: req.session.userid});
-         console.log("check2 "+teacher.id);
+        //  console.log("check2 "+teacher.id);
 
 
          let lessons;
@@ -76,7 +76,7 @@ router.get('/success', async (req, res) => {
          
          for (let oneLesson of lessons) {
 
-            console.log("check3 "+oneLesson.id);
+            // console.log("check3 "+oneLesson.id);
            }
         let scheduledLessons = [];
         if (lessons){
@@ -88,7 +88,7 @@ router.get('/success', async (req, res) => {
 
         for (let singleLesson of scheduledLessons) {
 
-         console.log("check4 "+singleLesson.id);
+        //  console.log("check4 "+singleLesson.id);
          console.log("check5 "+singleLesson.date);
          console.log("check6 "+singleLesson.time);
         }

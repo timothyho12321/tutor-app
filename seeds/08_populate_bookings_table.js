@@ -54,7 +54,7 @@ exports.seed = async function(knex) {
         name: 'Lesson A',
         subject: 'Math',
         day: faker.date.weekday(),
-        date: faker.date.future(),
+        date: "2024-06-28",
         time: "14:00",
         duration:  60,
         mode: faker.random.arrayElement(['Online', 'Offline']),

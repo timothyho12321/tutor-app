@@ -82,7 +82,15 @@
                     }
                 },
                 dayClick: function(date, allDay, jsEvent, view) {
-                    alert('Clicked on: ' + date.format());
+                    // Assuming you have the teacher's ID and subject stored in variables
+                    var teacherId = '123'; // Example teacher ID
+                    var subject = 'Math'; // Example subject
+
+                    // Construct the URL for the lesson addition page with query parameters
+                    var url = `/lesson/add-lesson?date=${date.format()}&teacherId=${teacherId}&subject=${subject}`;
+
+                    // Open the new page in a new tab/window
+                    window.open(url, '_blank');
                 }
             });
         });
