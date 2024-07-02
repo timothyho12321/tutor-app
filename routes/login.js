@@ -62,9 +62,9 @@ router.get('/success', async (req, res) => {
     if (req.session.role == 'teacher') {
         //res.sendFile(path.resolve('views/home_teacher.html'));
          // Fetch scheduled lessons from the database
-         //console.log("check1 "+req.session.userid);
+         console.log("check1 "+req.session.userid);
          let teacher = await Teacher.query().findOne({user_id: req.session.userid});
-        //  console.log("check2 "+teacher.id);
+         console.log("check2 "+teacher.id);
 
 
          let lessons;
@@ -76,7 +76,7 @@ router.get('/success', async (req, res) => {
          
          for (let oneLesson of lessons) {
 
-            // console.log("check3 "+oneLesson.id);
+            console.log("check3 "+oneLesson.id);
            }
         let scheduledLessons = [];
         if (lessons){
@@ -103,7 +103,7 @@ router.get('/success', async (req, res) => {
          // Convert the lessons to the format expected by FullCalendar
          let events = scheduledLessons.map(lesson => {
             let date = new Date(lesson.date);
-            let [hours, minutes] = lesson.time.split(':').map(Number); // Split the time into hours and minutes
+            let [hours, minutes] = lesson.time_start.split(':').map(Number); // Split the time into hours and minutes
         
             // Adjust the date object to Singapore's timezone
             date.setHours(hours + 8); // Singapore is 8 hours ahead of UTC

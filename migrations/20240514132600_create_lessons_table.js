@@ -9,7 +9,8 @@ exports.up = function(knex) {
         table.string('subject', 45);
         table.string('day', 45);
         table.date('date');
-        table.time('time');
+        table.time('time_start');
+        table.time('time_end');
         table.integer('duration');
         table.string('mode', 45);
         table.string('type',45);

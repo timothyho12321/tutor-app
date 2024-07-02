@@ -20,14 +20,19 @@ exports.seed = async function(knex) {
     const bookings = Array.from({length: 5}).map(() => {
 
         const date = faker.date.future();
-        const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        // const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        const time_start = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        const endDate = new Date(date.getTime() + 60*60*1000); // Add one hour
+        const time_end = `${endDate.getHours()}:${endDate.getMinutes()}:${endDate.getSeconds()}`;
 
         return{
         name: faker.random.arrayElement(['Lesson A', 'Lesson B', 'Lesson C', 'Lesson D']),
         subject: faker.random.arrayElement(['Math', 'Science', 'English', 'History', 'Art']),
         day: faker.date.weekday(),
         date: faker.date.future(),
-        time: time,
+        // time: time,
+        time_start: time_start, 
+        time_end: time_end,
         duration: faker.datatype.number({min: 60, max: 240}),
         mode: faker.random.arrayElement(['Online', 'Offline']),
         type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
@@ -54,8 +59,10 @@ exports.seed = async function(knex) {
         name: 'Lesson A',
         subject: 'Math',
         day: faker.date.weekday(),
-        date: "2024-06-28",
-        time: "14:00",
+        date: "2024-07-15",
+        // time: "14:00",
+        time_start: "14:00",
+        time_end: "15:00",
         duration:  60,
         mode: faker.random.arrayElement(['Online', 'Offline']),
         type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
