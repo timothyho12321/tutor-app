@@ -21,10 +21,10 @@ router.get('/testlogindatabase', (req, res) => {
 router.get('/add-lesson', async (req, res) => {
     // res.sendFile(path.join(__dirname, '..','views', 'add_lesson.html'));
    
-    const teacherId = req.cookies.userid;   
+    const teacherId = req.cookies.teacher_id;   
     const subjects = req.cookies.subjects_teacher;
     // console.log("hi ",req.session.id);
-    console.log("hi ",subjects);
+    // console.log("hi ",subjects);
     if (typeof subjects === 'string') {
         subjects = subjects.split(','); // Assuming subjects_teacher is a comma-separated string
     }
@@ -39,39 +39,55 @@ router.get('/add-lesson', async (req, res) => {
 
 router.post('/post-lesson', async (req, res) => {
 
-    let insert_day = new Date(req.body.date.getDay()); 
+    const insertDate = new Date(req.body.date); // Convert the string to a Date object
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    insert_day = days[new Date(req.body.date).getDay()]; // This converts the day number to a day name
-    
+    let insert_day = days[insertDate.getDay()]; // Now you can correctly call getDay() on the Date object
+    // console.log("1 ",insertDate);
+
+    const subject = req.body.subject;
+    const teacherId = req.cookies.teacher_id;  
+    // console.log("2 ",subject);
+
+    let insert_duration = calculateDuration(req.body.time_start, req.body.time_end);
     let newLesson = {
         name: req.body.name,
-        subject: req.body.subject,
+        subject_id: subject,
         day: insert_day,
-        date: req.body.date,
+        date: insertDate,
         time_start: req.body.time_start,
         time_end: req.body.time_end,
+        duration: insert_duration,
         mode: req.body.mode,
         type: req.body.type,
         status: req.body.status,
-        is_available: req.body.is_available,
+        is_available: 1,
         rate: req.body.rate,
         pax: req.body.pax,
         address: req.body.address,
         postal_code: req.body.postal_code,
-        subject_id: req.body.subject_id,
-        teacher_id: req.body.teacher_id,
-        student_id: req.body.student_id
+        teacher_id: teacherId
     };
 
     try {
-        const user = await User.query().insert(newUser);
-        console.log(user);
+        const lesson = await Lesson.query().insert(newLesson);
+        console.log(lesson);
         res.redirect('/user/success');
     } catch (err) {
         console.error(err);
         res.status(500).send('Error creating user');
     }
 });
+
+function calculateDuration(startTime, endTime) {
+    const [startHours, startMinutes] = startTime.split(':').map(Number);
+    const [endHours, endMinutes] = endTime.split(':').map(Number);
+
+    const startDate = new Date(0, 0, 0, startHours, startMinutes);
+    const endDate = new Date(0, 0, 0, endHours, endMinutes);
+
+    const duration = (endDate - startDate) / (1000 * 60); // Convert milliseconds to minutes
+    return duration;
+}
 
 
 module.exports = router;

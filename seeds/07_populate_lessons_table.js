@@ -31,7 +31,6 @@ exports.seed = async function(knex) {
 
         return{
         name: faker.random.arrayElement(['Lesson A', 'Lesson B', 'Lesson C', 'Lesson D']),
-        subject: faker.random.arrayElement(['Math', 'Science', 'English', 'History', 'Art']),
         day: faker.date.weekday(),
         date: faker.date.future(),
         duration: faker.datatype.number({min: 60, max: 240}),
@@ -60,7 +59,6 @@ exports.seed = async function(knex) {
 
     lessons.push({
         name: 'Lesson A',
-        subject: 'Math',
         day: faker.date.weekday(),
         // date: faker.date.future(),
         date: "2024-07-15",

@@ -4,9 +4,11 @@
  */
 exports.up = function(knex) {
     return knex.schema.alterTable('lessons', function(table) {
-        table.integer('teacher_id').unsigned().notNullable();
+        // table.integer('teacher_id').unsigned().notNullable();
+        table.integer('teacher_id').unsigned();
         table.foreign('teacher_id').references('id').inTable('teachers');
-        table.integer('student_id').unsigned().notNullable();
+        // table.integer('student_id').unsigned().notNullable();
+        table.integer('student_id').unsigned();
         table.foreign('student_id').references('id').inTable('students');
     });
 };
