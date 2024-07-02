@@ -5,6 +5,8 @@ const User = require('../models/User'); // Assuming you have a User model define
 const Teacher = require('../models/Teacher');
 const Booking = require('../models/Booking');
 const Lesson = require('../models/Lesson');
+const SubjectTeacher = require('../models/Subject Teacher');
+const Subject = require('../models/Subject');
 
 //const knexConfig = require('knex');
 // const knexConfig = require('../knexfile'); // adjust the path to your knexfile.js
@@ -46,6 +48,13 @@ router.post('/loginuser', async (req, res) => {
         req.session.userid = user.id;
         req.session.role = user.role;
         req.session.username = user.username;
+
+        // Storing in cookies
+        res.cookie('userid', user.id, { httpOnly: true }); // httpOnly: true is recommended for security
+        res.cookie('role', user.role, { httpOnly: true });
+        res.cookie('username', user.username, { httpOnly: true });
+
+
         res.redirect('/login/success');
         // res.send("hi");
     } else {
@@ -62,11 +71,12 @@ router.get('/success', async (req, res) => {
     if (req.session.role == 'teacher') {
         //res.sendFile(path.resolve('views/home_teacher.html'));
          // Fetch scheduled lessons from the database
-         console.log("check1 "+req.session.userid);
+        //  console.log("check1 "+req.session.userid);
          let teacher = await Teacher.query().findOne({user_id: req.session.userid});
-         console.log("check2 "+teacher.id);
+        //  console.log("check2 "+teacher.id);
 
-
+        res.cookie('teacher_id', teacher.id, { httpOnly: true });
+        
          let lessons;
          if (teacher) {
             lessons = await Lesson.query().where('lessons.teacher_id', teacher.id);
@@ -89,16 +99,33 @@ router.get('/success', async (req, res) => {
         for (let singleLesson of scheduledLessons) {
 
         //  console.log("check4 "+singleLesson.id);
-         console.log("check5 "+singleLesson.date);
-         console.log("check6 "+singleLesson.time);
+        //  console.log("check5 "+singleLesson.date);
+        //  console.log("check6 "+singleLesson.time);
         }
+        subjectsTeacherSave = [];
+        if (teacher) {
+            // subjectsTeacher = await SubjectTeacher.findAll();
+            subjectsTeacher = await SubjectTeacher.findAllByTeacherId(teacher.id);
+            // subjects are the id of subjects that the teacher is teaching
+            // can be multiple subjects
+            // console.log("check7 "+subjectsTeacher);
+            for (let eachSubjectTeacher of subjectsTeacher) {
+                // console.log("check8 "+subjectTeacher.id);
+                // console.log("check9 "+subjectTeacher.teacher_id);
+                // console.log("check10 "+eachSubjectTeacher.subject_id);
+                checkSubjectId = eachSubjectTeacher.subject_id;
 
-        //not working retrieve from belongs to with two tables
-         //let scheduledLessons;
-        // if (teacher) {
-        //        scheduledLessons = await Booking.query().withGraphJoined('lessons.teacher').where('lessons.teacher.id', teacher.id);
+                subjectNameSave = await Subject.query().findOne({id: checkSubjectId});
+                
+                // console.log("check11 "+subjectNameSave.name);
+                // subjectsTeacherSave.push(eachSubjectTeacher.subject_id);
+                subjectsTeacherSave.push(subjectNameSave.name);
+            }
+        }
+        // console.log("check12 "+subjectsTeacherSave);
+        res.cookie('subjects_teacher', subjectsTeacherSave, { httpOnly: true });
         
-        //    }
+
         //console.log("check3 "+scheduledLessons);
          // Convert the lessons to the format expected by FullCalendar
          let events = scheduledLessons.map(lesson => {
@@ -113,12 +140,16 @@ router.get('/success', async (req, res) => {
                 start: date, // Combine the date and time into a single Date object
                 title: lesson.name,
                 url: '/lesson/' + lesson.id
-         };
+            };
          });
  
          // Send the HTML file and the events data
          //res.sendFile(path.resolve('views/home_teacher_html.html'));
-         res.render('home_teacher', { events: JSON.stringify(events) });
+         res.render('home_teacher', { 
+            events: JSON.stringify(events),
+            teacherId: teacher.id, 
+            // subject: teacher.subject,
+         });
          
     } else if (req.session.role == 'student') {
         res.sendFile(path.resolve('views/home_student.html'));

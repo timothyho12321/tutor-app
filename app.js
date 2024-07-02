@@ -1,3 +1,4 @@
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const mysql = require('mysql');
 const path = require('path');
@@ -9,6 +10,10 @@ const lessonRouter = require('./routes/lesson');
 const flash = require('connect-flash');
 
 const app = express();
+
+
+// Use cookie-parser middleware
+app.use(cookieParser());
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');

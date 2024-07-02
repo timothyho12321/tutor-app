@@ -40,19 +40,16 @@
                     </div>
                     <div class="form-group">
                         <label for="subject">Subject</label>
-                        <select class="form-control" id="subject" name="subject">
-                            <option value="Math">Math</option>
-                            <option value="Science">Science</option>
-                            <option value="English">English</option>
-                            <option value="History">History</option>
-                            <option value="Geography">Geography</option>
-                            <option value="Art">Art</option>
-                            <option value="Music">Music</option>
-                            <option value="Physical Education">Physical Education</option>
-                            <option value="Computer Science">Computer Science</option>
-                            <option value="Foreign Language">Foreign Language</option>
-                            <option value="Other">Other</option>
-                        </select>
+                        <div>
+                            <% const standardSubjects = ['English', 'Math', 'Science', 'Art', 'Music']; %>
+                            <% standardSubjects.forEach(function(eachSubject){ %>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="subject" value="<%= eachSubject %>" <%= subjects.includes(eachSubject)  ? 'checked' : '' %>> <%= eachSubject %>
+                                    </label>
+                                </div>
+                            <% }); %>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="day">Day</label>
@@ -121,9 +118,10 @@
                         <label for="subject_id">Subject ID</label>
                         <input type="number" class="form-control" id="subject_id" name="subject_id" placeholder="Subject ID">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label for="teacher_id">Teacher ID</label>
-                        <input type="number" class="form-control" id="teacher_id" name="teacher_id" placeholder="Teacher ID">
+                        <input type="number" class="form-control" id="teacher_id" 
+                        name="teacher_id" placeholder="Teacher ID" value="<%= teacherId %>">
                     </div>
                     <div class="form-group">
                         <label for="student_id">Student ID</label>

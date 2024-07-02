@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .center-card {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+        }
+        .card {
+            height: auto;
+            width: 60%;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-card">
+        <div class="card">
+            <div class="card-body ">
+                
+                <div class="d-flex justify-content-between align-items-start">
+                    <h5 class="card-title">
+                        Add Lesson
+                    </h5>
+                    
+                        <a href="../login/success" class="btn btn-primary">Back to calender</a>
+                    
+                </div>
+                
+                
+                <form action="/lesson/post-lesson" method="post">
+                    <div class="form-group">
+                        <label for="name">Lesson Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select class="form-control" id="subject" name="subject">
+                            <option value="Math">Math</option>
+                            <option value="Science">Science</option>
+                            <option value="English">English</option>
+                            <option value="History">History</option>
+                            <option value="Geography">Geography</option>
+                            <option value="Art">Art</option>
+                            <option value="Music">Music</option>
+                            <option value="Physical Education">Physical Education</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Foreign Language">Foreign Language</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="day">Day</label>
+                        <input type="text" class="form-control" id="day" name="day" placeholder="Day">
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="date">
+                    </div>
+                    <div class="form-group">
+                        <label for="time_start">Time Start</label>
+                        <input type="time" class="form-control" id="time_start" name="time_start">
+                    </div>
+                    <div class="form-group">
+                        <label for="time_end">Time End</label>
+                        <input type="time" class="form-control" id="time_end" name="time_end">
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="mode">Mode</label>
+                        <select class="form-control" id="mode" name="mode">
+                            <option value="Online">Online</option>
+                            <option value="In-person">In-person</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <select class="form-control" id="type" name="type">
+                            <option value="Math">Tutorial</option>
+                            <option value="Science">Lecture</option>
+                            <option value="English">Lab</option>
+                        </select>    
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="Completed">Completed</option>
+                            <option value="Scheduled">Scheduled</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_available">Is Available</label>
+                        <select class="form-control" id="is_available" name="is_available">
+                            <option selected value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rate">Rate</label>
+                        <input type="number" class="form-control" id="rate" name="rate" placeholder="Rate">
+                    </div>
+                    <div class="form-group">
+                        <label for="pax">Pax</label>
+                        <input type="number" class="form-control" id="pax" name="pax" placeholder="Pax">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea class="form-control" id="address" name="address" placeholder="Address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="postal_code">Postal Code</label>
+                        <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Postal Code">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject_id">Subject ID</label>
+                        <input type="number" class="form-control" id="subject_id" name="subject_id" placeholder="Subject ID">
+                    </div>
+                    <div class="form-group" value = $_get[teacherId]>
+                        <label for="teacher_id">Teacher ID</label>
+                        <input type="number" class="form-control" id="teacher_id" 
+                        name="teacher_id" placeholder="Teacher ID" value="<%= teacherId %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="student_id">Student ID</label>
+                        <input type="number" class="form-control" id="student_id" name="student_id" placeholder="Student ID">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Lesson</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

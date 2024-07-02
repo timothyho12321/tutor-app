@@ -42,6 +42,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/paid-lesson">Paid Lesson</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login/loginuser">Login</a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -83,7 +86,9 @@
                 },
                 dayClick: function(date, allDay, jsEvent, view) {
                     // Assuming you have the teacher's ID and subject stored in variables
-                    var teacherId = '123'; // Example teacher ID
+                    // var teacherId = '123'; // Example teacher ID
+                    var teacherId = '<%= teacherId %>';
+    
                     var subject = 'Math'; // Example subject
 
                     // Construct the URL for the lesson addition page with query parameters
