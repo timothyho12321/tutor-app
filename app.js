@@ -7,6 +7,7 @@ const session = require('express-session');
 const userRouter = require('./routes/user');
 const loginRouter = require('./routes/login');
 const lessonRouter = require('./routes/lesson');
+const bookingRouter = require('./routes/booking');
 const flash = require('connect-flash');
 
 const app = express();
@@ -33,6 +34,7 @@ app.use(flash());
 app.use('/user', userRouter);
 app.use('/login', loginRouter);
 app.use('/lesson', lessonRouter);
+app.use('/booking', bookingRouter); 
 
 app.listen('3080', () => {
     console.log('Server started on http://localhost:3080')

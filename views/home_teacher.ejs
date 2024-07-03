@@ -37,7 +37,10 @@
                     <a class="nav-link" href="/set-profile">Set Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/set-lesson">Set Lesson</a>
+                    <a class="nav-link" href="/lesson/add-lesson">Set Lesson</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/booking/add-booking">Set Booking</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/paid-lesson">Paid Lesson</a>
@@ -82,17 +85,22 @@
                     if (event.url) {
                         window.open(event.url);
                         return false;
+
                     }
+                    // Construct the URL for the lesson addition page with query parameters
+                    var url = `/lesson/edit-lesson?id=${event.id}`;
+
+                    // Open the new page in a new tab/window
+                    window.open(url, '_blank');
                 },
                 dayClick: function(date, allDay, jsEvent, view) {
                     // Assuming you have the teacher's ID and subject stored in variables
                     // var teacherId = '123'; // Example teacher ID
                     var teacherId = '<%= teacherId %>';
     
-                    var subject = 'Math'; // Example subject
 
                     // Construct the URL for the lesson addition page with query parameters
-                    var url = `/lesson/add-lesson?date=${date.format()}&teacherId=${teacherId}&subject=${subject}`;
+                    var url = `/lesson/add-lesson?date=${date.format()}&teacherId=${teacherId}`;
 
                     // Open the new page in a new tab/window
                     window.open(url, '_blank');

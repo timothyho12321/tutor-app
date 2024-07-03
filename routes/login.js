@@ -72,31 +72,32 @@ router.get('/success', async (req, res) => {
         //res.sendFile(path.resolve('views/home_teacher.html'));
          // Fetch scheduled lessons from the database
         //  console.log("check1 "+req.session.userid);
-         let teacher = await Teacher.query().findOne({user_id: req.session.userid});
+        let teacher = await Teacher.query().findOne({user_id: req.session.userid});
         //  console.log("check2 "+teacher.id);
 
         res.cookie('teacher_id', teacher.id, { httpOnly: true });
         
-         let lessons;
-         if (teacher) {
+        let lessons;
+        if (teacher) {
+            
             lessons = await Lesson.query().where('lessons.teacher_id', teacher.id);
             // lessons are the id of lessons that the teacher is teaching
             // can be multiple lessons
+            // lessons are also used for lessonEvents in calender
         }
          
-         for (let oneLesson of lessons) {
-
-            console.log("check3 "+oneLesson.id);
-           }
-        let scheduledLessons = [];
+        for (let oneLesson of lessons) {
+            // console.log("check3 "+oneLesson.id);
+        }
+        let insertBookings = [];
         if (lessons){
             for (let lesson of lessons) {
                 let bookings = await Booking.query().where('bookings.lesson_id', lesson.id);
-                scheduledLessons.push(...bookings);
+                insertBookings.push(...bookings);
             }
         }
 
-        for (let singleLesson of scheduledLessons) {
+        for (let singleLesson of insertBookings) {
 
         //  console.log("check4 "+singleLesson.id);
         //  console.log("check5 "+singleLesson.date);
@@ -127,22 +128,58 @@ router.get('/success', async (req, res) => {
         
 
         //console.log("check3 "+scheduledLessons);
-         // Convert the lessons to the format expected by FullCalendar
-         let events = scheduledLessons.map(lesson => {
-            let date = new Date(lesson.date);
-            let [hours, minutes] = lesson.time_start.split(':').map(Number); // Split the time into hours and minutes
+        // Convert the lessons to the format expected by FullCalendar
+        // let events = scheduledLessons.map(lesson => {
+        //     let date = new Date(lesson.date);
+        //     let [hours, minutes] = lesson.time_start.split(':').map(Number); // Split the time into hours and minutes
         
-            // Adjust the date object to Singapore's timezone
-            date.setHours(hours + 8); // Singapore is 8 hours ahead of UTC
+        //     // Adjust the date object to Singapore's timezone
+        //     date.setHours(hours + 8); // Singapore is 8 hours ahead of UTC
+        //     date.setMinutes(minutes);
+        
+        //     return {
+        //         start: date, // Combine the date and time into a single Date object
+        //         title: lesson.name,
+        //         url: '/lesson/' + lesson.id
+        //     };
+        // });
+ 
+        let lessonEvents = lessons.map(lesson => {
+            let date = new Date(lesson.date);
+            console.log("check13 ",date);
+            let [hours, minutes] = lesson.time_start.split(':').map(Number);
+            date.setHours(hours + 8); // Adjust for timezone
             date.setMinutes(minutes);
         
             return {
-                start: date, // Combine the date and time into a single Date object
+                start: date,
                 title: lesson.name,
-                url: '/lesson/' + lesson.id
+                url: '/lesson/' + lesson.id,
+                color: 'blue', // Color for lessons
+                id: lesson.id
             };
-         });
- 
+        });
+        
+
+        let bookingEvents = insertBookings.map(booking => {
+            let date = new Date(booking.date);
+            let [hours, minutes] = booking.time_start.split(':').map(Number);
+            date.setHours(hours + 8); // Adjust for timezone
+            date.setMinutes(minutes);
+        
+            return {
+                start: date,
+                title: booking.name,
+                url: '/booking/' + booking.id,
+                color: 'green', // Color for bookings
+                id: booking.id
+            };
+        });
+        
+        let events = lessonEvents.concat(bookingEvents);
+
+
+
          // Send the HTML file and the events data
          //res.sendFile(path.resolve('views/home_teacher_html.html'));
          res.render('home_teacher', { 
