@@ -11,188 +11,122 @@ const Subject = require('../models/Subject');
 //const knexConfig = require('knex');
 // const knexConfig = require('../knexfile'); // adjust the path to your knexfile.js
 // const knex = require('knex')(knexConfig);
-
-router.get('/testlogindatabase', (req, res) => {
-    res.send("hi");
-    async function testDatabaseConnection() {
-    let users = await User.query();
-    console.log(users);
+class LoginController {
+    constructor() {
+        this.router = require('express').Router();
+        this.initializeRoutes();
     }
 
-    testDatabaseConnection();
-});
+    initializeRoutes() {
+        this.router.get('/testlogindatabase', this.testDatabaseConnection);
+        this.router.get('/loginuser', this.getLoginUser);
+        this.router.post('/loginuser', this.postLoginUser.bind(this));
+        this.router.get('/success', this.getSuccess.bind(this));
+    }
 
-// not working
-// sssssss
+    async testDatabaseConnection(req, res) {
+        res.send("hi");
+        let users = await User.query();
+        console.log(users);
+    }
 
-router.get('/loginuser', (req, res) => {
-    // res.sendFile(path.join(__dirname, '..','views', 'login.ejs'));
-    res.render('login',{ messages: req.flash() });
-});
-
-router.post('/loginuser', async (req, res) => {
-
-    let loginUser = {
-        username: req.body.username,
-        password: req.body.password,
-    
-    };
-
-    // console.log("0 "+req.body);
-    // console.log("1 "+loginUser.username);
-    // console.log("2 "+loginUser.password);
-    let user = await User.findOne({username: loginUser.username, password: loginUser.password});
-    // console.log(user);
-
-    if(user) {
-        req.session.userid = user.id;
-        req.session.role = user.role;
-        req.session.username = user.username;
-
-        // Storing in cookies
-        res.cookie('userid', user.id, { httpOnly: true }); // httpOnly: true is recommended for security
-        res.cookie('role', user.role, { httpOnly: true });
-        res.cookie('username', user.username, { httpOnly: true });
-
-
-        res.redirect('/login/success');
-        // res.send("hi");
-    } else {
-        req.flash('error', 'Invalid username or password');
-       
-        // res.redirect('/login/loginuser');
+    getLoginUser(req, res) {
         res.render('login', { messages: req.flash() });
     }
-      
-});
 
+    async postLoginUser(req, res) {
+        let loginUser = {
+            username: req.body.username,
+            password: req.body.password,
+        };
 
-router.get('/success', async (req, res) => {
-    if (req.session.role == 'teacher') {
-        //res.sendFile(path.resolve('views/home_teacher.html'));
-         // Fetch scheduled lessons from the database
-        //  console.log("check1 "+req.session.userid);
-        let teacher = await Teacher.query().findOne({user_id: req.session.userid});
-        //  console.log("check2 "+teacher.id);
+        let user = await User.findOne({ username: loginUser.username, password: loginUser.password });
 
-        res.cookie('teacher_id', teacher.id, { httpOnly: true });
-        
-        let lessons;
-        if (teacher) {
-            
-            lessons = await Lesson.query().where('lessons.teacher_id', teacher.id);
-            // lessons are the id of lessons that the teacher is teaching
-            // can be multiple lessons
-            // lessons are also used for lessonEvents in calender
+        if (user) {
+            req.session.userid = user.id;
+            req.session.role = user.role;
+            req.session.username = user.username;
+
+            res.cookie('userid', user.id, { httpOnly: true });
+            res.cookie('role', user.role, { httpOnly: true });
+            res.cookie('username', user.username, { httpOnly: true });
+
+            res.redirect('/login/success');
+        } else {
+            req.flash('error', 'Invalid username or password');
+            res.render('login', { messages: req.flash() });
         }
-         
-        for (let oneLesson of lessons) {
-            // console.log("check3 "+oneLesson.id);
-        }
-        let insertBookings = [];
-        if (lessons){
+    }
+
+    async getSuccess(req, res) {
+        if (req.session.role == 'teacher') {
+            let teacher = await Teacher.query().findOne({ user_id: req.session.userid });
+            res.cookie('teacher_id', teacher.id, { httpOnly: true });
+
+            let lessons = teacher ? await Lesson.query().where('lessons.teacher_id', teacher.id) : [];
+
+            let insertBookings = [];
             for (let lesson of lessons) {
                 let bookings = await Booking.query().where('bookings.lesson_id', lesson.id);
                 insertBookings.push(...bookings);
             }
-        }
 
-        for (let singleLesson of insertBookings) {
-
-        //  console.log("check4 "+singleLesson.id);
-        //  console.log("check5 "+singleLesson.date);
-        //  console.log("check6 "+singleLesson.time);
-        }
-        subjectsTeacherSave = [];
-        if (teacher) {
-            // subjectsTeacher = await SubjectTeacher.findAll();
-            subjectsTeacher = await SubjectTeacher.findAllByTeacherId(teacher.id);
-            // subjects are the id of subjects that the teacher is teaching
-            // can be multiple subjects
-            // console.log("check7 "+subjectsTeacher);
-            for (let eachSubjectTeacher of subjectsTeacher) {
-                // console.log("check8 "+subjectTeacher.id);
-                // console.log("check9 "+subjectTeacher.teacher_id);
-                // console.log("check10 "+eachSubjectTeacher.subject_id);
-                checkSubjectId = eachSubjectTeacher.subject_id;
-
-                subjectNameSave = await Subject.query().findOne({id: checkSubjectId});
-                
-                // console.log("check11 "+subjectNameSave.name);
-                // subjectsTeacherSave.push(eachSubjectTeacher.subject_id);
-                subjectsTeacherSave.push(subjectNameSave.name);
+            let subjectsTeacherSave = [];
+            if (teacher) {
+                let subjectsTeacher = await SubjectTeacher.findAllByTeacherId(teacher.id);
+                for (let eachSubjectTeacher of subjectsTeacher) {
+                    let subjectNameSave = await Subject.query().findOne({ id: eachSubjectTeacher.subject_id });
+                    subjectsTeacherSave.push(subjectNameSave.name);
+                }
             }
-        }
-        // console.log("check12 "+subjectsTeacherSave);
-        res.cookie('subjects_teacher', subjectsTeacherSave, { httpOnly: true });
-        
+            res.cookie('subjects_teacher', subjectsTeacherSave, { httpOnly: true });
 
-        //console.log("check3 "+scheduledLessons);
-        // Convert the lessons to the format expected by FullCalendar
-        // let events = scheduledLessons.map(lesson => {
-        //     let date = new Date(lesson.date);
-        //     let [hours, minutes] = lesson.time_start.split(':').map(Number); // Split the time into hours and minutes
-        
-        //     // Adjust the date object to Singapore's timezone
-        //     date.setHours(hours + 8); // Singapore is 8 hours ahead of UTC
-        //     date.setMinutes(minutes);
-        
-        //     return {
-        //         start: date, // Combine the date and time into a single Date object
-        //         title: lesson.name,
-        //         url: '/lesson/' + lesson.id
-        //     };
-        // });
- 
-        let lessonEvents = lessons.map(lesson => {
+            let events = [...this.mapLessonsToEvents(lessons), ...this.mapBookingsToEvents(insertBookings)];
+
+            res.render('home_teacher', {
+                events: JSON.stringify(events),
+                teacherId: teacher.id,
+            });
+        } else if (req.session.role == 'student') {
+            res.sendFile(path.resolve('views/home_student.html'));
+        }
+    }
+
+    mapLessonsToEvents(lessons) {
+        return lessons.map(lesson => {
             let date = new Date(lesson.date);
-            console.log("check13 ",date);
             let [hours, minutes] = lesson.time_start.split(':').map(Number);
             date.setHours(hours + 8); // Adjust for timezone
             date.setMinutes(minutes);
-        
+
             return {
                 start: date,
                 title: lesson.name,
                 url: '/lesson/' + lesson.id,
-                color: 'blue', // Color for lessons
+                color: 'blue',
                 id: lesson.id
             };
         });
-        
+    }
 
-        let bookingEvents = insertBookings.map(booking => {
+    mapBookingsToEvents(bookings) {
+        return bookings.map(booking => {
             let date = new Date(booking.date);
             let [hours, minutes] = booking.time_start.split(':').map(Number);
             date.setHours(hours + 8); // Adjust for timezone
             date.setMinutes(minutes);
-        
+
             return {
                 start: date,
                 title: booking.name,
                 url: '/booking/' + booking.id,
-                color: 'green', // Color for bookings
+                color: 'green',
                 id: booking.id
             };
         });
-        
-        let events = lessonEvents.concat(bookingEvents);
-
-
-
-         // Send the HTML file and the events data
-         //res.sendFile(path.resolve('views/home_teacher_html.html'));
-         res.render('home_teacher', { 
-            events: JSON.stringify(events),
-            teacherId: teacher.id, 
-            // subject: teacher.subject,
-         });
-         
-    } else if (req.session.role == 'student') {
-        res.sendFile(path.resolve('views/home_student.html'));
-        
     }
-});
+}
 
-
-module.exports = router;
+// Usage with Express router
+const loginController = new LoginController();
+module.exports = loginController.router;

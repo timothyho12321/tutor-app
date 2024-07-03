@@ -82,16 +82,18 @@
                 editable: true,
                 events: events,
                 eventClick: function(event) {
-                    if (event.url) {
-                        window.open(event.url);
-                        return false;
+                    // if (event.url) {
+                    //     window.open(event.url);
+                    //     // console.log(event.url);
+                    //     return false;
 
-                    }
+                    // }
                     // Construct the URL for the lesson addition page with query parameters
                     var url = `/lesson/edit-lesson?id=${event.id}`;
 
                     // Open the new page in a new tab/window
-                    window.open(url, '_blank');
+                    window.open(url);
+                    return false;
                 },
                 dayClick: function(date, allDay, jsEvent, view) {
                     // Assuming you have the teacher's ID and subject stored in variables

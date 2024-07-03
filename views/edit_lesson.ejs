@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .center-card {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+        }
+        .card {
+            height: auto;
+            width: 60%;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-card">
+        <div class="card">
+            <div class="card-body ">
+                
+                <div class="d-flex justify-content-between align-items-start">
+                    <h5 class="card-title">
+                        Add Lesson
+                    </h5>
+                    
+                        <a href="../login/success" class="btn btn-primary">Back to calender</a>
+                    
+                </div>
+                
+                
+                <form action="/lesson/edit-lesson" method="post">
+                    
+                    <div class="form-group">
+                        <label for="name">Lesson Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<%= name %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <div>
+                            <% const standardSubjects = {1: 'English', 2: 'Math', 3: 'Science', 4: 'Art', 5: 'Music'}; %>
+                            <% Object.keys(standardSubjects).forEach(function(key){ %>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="subject" value="<%= key %>" <%= subject == standardSubjects[key] ? 'checked' : '' %>> <%= standardSubjects[key] %>
+                                    </label>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" value="<%= date %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="time_start">Time Start</label>
+                        <input type="time" class="form-control" id="time_start" name="time_start" value="<%= time_start %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="time_end">Time End</label>
+                        <input type="time" class="form-control" id="time_end" name="time_end" value="<%= time_end %>">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mode">Mode</label>
+                        <select class="form-control" id="mode" name="mode">
+                            <option value="Online" <%= mode == 'Online' ? 'selected' : '' %>>Online</option>
+                            <option value="In-person" <%= mode == 'In-person' ? 'selected' : '' %>>In-person</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <select class="form-control" id="type" name="type">
+                            <option value="Tutorial" <%= type == 'Tutorial' ? 'selected' : '' %>>Tutorial</option>
+                            <option value="Lecture" <%= type == 'Lecture' ? 'selected' : '' %>>Lecture</option>
+                            <option value="Lab" <%= type == 'Lab' ? 'selected' : '' %>>Lab</option>
+                        </select>    
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="Completed" <%= status == 'Completed' ? 'selected' : '' %>>Completed</option>
+                            <option value="Scheduled" <%= status == 'Scheduled' ? 'selected' : '' %>>Scheduled</option>
+                            <option value="Cancelled" <%= status == 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_available">Is Available</label>
+                        <select class="form-control" id="is_available" name="is_available">
+                            <option value="1" <%= is_available ? 'selected' : '' %>>Yes</option>
+                            <option value="0" <%= !is_available ? 'selected' : '' %>>No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rate">Rate</label>
+                        <input type="number" class="form-control" id="rate" name="rate" placeholder="Rate" value="<%= rate %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="pax">Pax</label>
+                        <input type="number" class="form-control" id="pax" name="pax" placeholder="Pax" value="<%= pax %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea class="form-control" id="address" name="address" placeholder="Address"><%= address %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="postal_code">Postal Code</label>
+                        <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Postal Code" value="<%= postal_code %>">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Edit Lesson</button>
+
+                    <input type="hidden" class="form-control" id="lesson_id" name="lesson_id"  value="<%= lesson_id %>">
+                  
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
