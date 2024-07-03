@@ -146,6 +146,71 @@ class LessonController {
             res.status(500).send('Error creating user');
         }
     }
+    async deleteLessonView(req, res) {
+        // console.log("deleteLessonView");
+        const lesson_id = req.body.lesson_id; 
+        console.log("search_id: ", lesson_id);  
+        // let lesson = await Lesson.query().where('lessons.teacher_id', search_id);
+        let lesson = await Lesson.query().findById(lesson_id);
+        // console.log("date: ", lesson.date);  
+        // const search_id = req.query.id; 
+        
+        if (!lesson) {
+            return res.status(404).send("Lesson not found");
+        }
+        
+        // Format the date to YYYY-MM-DD
+        // const date = new Date(lesson.date);
+        // const formattedDate = date.toISOString().split('T')[0]; // Extracts date part
+
+         // Adjust the date to the local timezone
+        let date = new Date(lesson.date);
+        let [hours, minutes] = lesson.time_start.split(':').map(Number);
+        date.setHours(hours + 8); // Adjust for timezone (+8 hours)
+        date.setMinutes(minutes);
+        const formattedDate = date.toISOString().split('T')[0]; // Extracts date part
+
+        const subject_id = lesson.subject_id; 
+        // console.log("subject_id: ", subject_id);  
+        // let lesson = await Lesson.query().where('lessons.teacher_id', search_id);
+        let searchSubject = await Subject.query().findById(subject_id);
+        
+
+        // Pass all lesson fields to the view
+        res.render('delete_lesson', {
+            name: lesson.name,
+            subject: searchSubject.name,
+            date: formattedDate,
+            time_start: lesson.time_start,
+            time_end: lesson.time_end,
+            mode: lesson.mode,
+            type: lesson.type,
+            status: lesson.status,
+            is_available: lesson.is_available,
+            rate: lesson.rate,
+            pax: lesson.pax,
+            address: lesson.address,
+            postal_code: lesson.postal_code,
+            lesson_id: lesson_id
+        });
+    }
+    
+    async deleteLesson(req, res) {
+        if (req.body.action === "yes") {
+            console.log("hi1 "); 
+            // Assuming Lesson is a model with a method to delete a lesson by ID
+            try {
+                await Lesson.query().deleteById(req.body.lesson_id);
+                res.redirect('/login/success');
+            } catch (err) {
+                console.error(err);
+                res.status(500).send('Error deleting lesson');
+            }
+        } else if (req.body.action === "no") {
+            console.log("hi2 "); 
+            res.redirect('/login/success');
+        }
+    }
 
     calculateDuration(startTime, endTime) {
         const [startHours, startMinutes] = startTime.split(':').map(Number);
@@ -164,6 +229,7 @@ router.get('/add-lesson', (req, res) => lessonController.addLesson(req, res));
 router.post('/post-lesson', (req, res) => lessonController.postLesson(req, res));
 router.get('/edit-lesson', (req, res) => lessonController.editLessonView(req, res));
 router.post('/edit-lesson', (req, res) => lessonController.editLesson(req, res));
-
+router.post('/delete-lesson', (req, res) => lessonController.deleteLessonView(req, res));
+router.post('/delete-lesson-data', (req, res) => lessonController.deleteLesson(req, res));
 
 module.exports = router;

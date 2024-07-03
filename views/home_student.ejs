@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" type="text/css" rel="stylesheet" />
+
+    
+    <style>
+        .center-card {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+        }
+        .card {
+            height: auto;
+            width: 90%;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Teacher</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            
+                <li class="nav-item">
+                    <a class="nav-link" href="/set-profile">Set Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/lesson/add-lesson">Set Lesson</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/booking/add-booking">Set Booking</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/paid-lesson">Paid Lesson</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login/loginuser">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    
+        <div class="center-card">
+            <div class="card">
+                <div class="card-body ">
+                    <div id="bootstrapModalFullCalendar"></div>
+                </div>
+            </div>
+        </div>
+    
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Convert the server-side variable to a client-side variable
+        var events = JSON.parse('<%- events %>');
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#bootstrapModalFullCalendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                defaultView: 'month',
+                editable: true,
+                events: events,
+                eventClick: function(event) {
+                    // if (event.url) {
+                    //     window.open(event.url);
+                    //     // console.log(event.url);
+                    //     return false;
+
+                    // }
+                    // Construct the URL for the lesson addition page with query parameters
+                    var url = `/lesson/edit-lesson?id=${event.id}`;
+
+                    // Open the new page in a new tab/window
+                    window.open(url);
+                    return false;
+                },
+                dayClick: function(date, allDay, jsEvent, view) {
+                    // Assuming you have the teacher's ID and subject stored in variables
+                    // var teacherId = '123'; // Example teacher ID
+                    var teacherId = '<%= teacherId %>';
+    
+
+                    // Construct the URL for the lesson addition page with query parameters
+                    var url = `/lesson/add-lesson?date=${date.format()}&teacherId=${teacherId}`;
+
+                    // Open the new page in a new tab/window
+                    window.open(url, '_blank');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

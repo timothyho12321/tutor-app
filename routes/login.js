@@ -7,6 +7,7 @@ const Booking = require('../models/Booking');
 const Lesson = require('../models/Lesson');
 const SubjectTeacher = require('../models/Subject Teacher');
 const Subject = require('../models/Subject');
+const Student = require('../models/Student');
 
 //const knexConfig = require('knex');
 // const knexConfig = require('../knexfile'); // adjust the path to your knexfile.js
@@ -88,7 +89,33 @@ class LoginController {
                 teacherId: teacher.id,
             });
         } else if (req.session.role == 'student') {
-            res.sendFile(path.resolve('views/home_student.html'));
+            let student = await Student.query().findOne({ user_id: req.session.userid });
+            res.cookie('student_id', student.id, { httpOnly: true });
+
+            let lessons = student ? await Lesson.query().where('lessons.student_id', student.id) : [];
+
+            let insertBookings = [];
+            for (let lesson of lessons) {
+                let bookings = await Booking.query().where('bookings.lesson_id', lesson.id);
+                insertBookings.push(...bookings);
+            }
+
+            let subjectsStudentSave = [];
+            if (student) {
+                let subjectsStudent = await SubjectTeacher.findAllByTeacherId(teacher.id);
+                for (let eachSubjectTeacher of subjectsStudent) {
+                    let subjectNameSave = await Subject.query().findOne({ id: eachSubjectTeacher.subject_id });
+                    subjectsStudentSave.push(subjectNameSave.name);
+                }
+            }
+            res.cookie('subjects_student', subjectsStudentSave, { httpOnly: true });
+
+            let events = [...this.mapLessonsToEvents(lessons), ...this.mapBookingsToEvents(insertBookings)];
+
+            res.render('home_student', {
+                events: JSON.stringify(events),
+                studentId: student.id,
+            });
         }
     }
 
