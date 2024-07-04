@@ -30,22 +30,22 @@ class LessonController {
 
         let insert_duration = this.calculateDuration(req.body.time_start, req.body.time_end);
         let newLesson = {
-            name: req.body.name,
-            subject_id: req.body.subject,
-            day: insert_day,
-            date: insertDate,
-            time_start: req.body.time_start,
-            time_end: req.body.time_end,
-            duration: insert_duration,
-            mode: req.body.mode,
-            type: req.body.type,
-            status: req.body.status,
-            is_available: 1,
-            rate: req.body.rate,
-            pax: req.body.pax,
-            address: req.body.address,
-            postal_code: req.body.postal_code,
-            teacher_id: req.cookies.teacher_id
+            name: req.body.name || null,
+            subject_id: req.body.subject || null,
+            day: insert_day || null,
+            date: insertDate || null,
+            time_start: req.body.time_start || null,
+            time_end: req.body.time_end || null,
+            duration: insert_duration || null,
+            mode: req.body.mode || null,
+            type: req.body.type || null,
+            status: req.body.status || null,
+            is_hide: req.body.is_hide || null, // Assuming this should always be 1 as per your logic
+            rate: req.body.rate || null  ,
+            pax: req.body.pax || null,
+            address: req.body.address || null,
+            postal_code: req.body.postal_code || null,
+            teacher_id: req.cookies.teacher_id || null
         };
 
         try {
@@ -99,7 +99,7 @@ class LessonController {
             mode: lesson.mode,
             type: lesson.type,
             status: lesson.status,
-            is_available: lesson.is_available,
+            is_hide: lesson.is_hide,
             rate: lesson.rate,
             pax: lesson.pax,
             address: lesson.address,

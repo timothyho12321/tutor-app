@@ -15,7 +15,7 @@ exports.up = function(knex) {
         table.string('mode', 45);
         table.string('type',45);
         table.string('status',45);
-        table.tinyint('is_available');
+        table.tinyint('is_hide');
         table.integer('rate');
         table.integer('pax');
         table.text('address');

@@ -20,6 +20,11 @@ exports.seed = async function(knex) {
         student_id: faker.random.arrayElement(studentIds), // Pick a random user ID
         subject_id: faker.random.arrayElement(subjectIds), // Pick a random user ID
     }));
+
+    records.push({ 
+        student_id: 6, // Pick a random user ID
+        subject_id: 1, // Pick a random user ID
+    });
    
     return knex('students_subjects').insert(records);
 };

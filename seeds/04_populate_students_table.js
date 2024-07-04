@@ -21,5 +21,15 @@ exports.seed = async function(knex) {
         user_id: faker.random.arrayElement(userIds), // Pick a random user ID
     }));
 
+    students.push({ 
+        name: "Vera",
+        description: faker.lorem.paragraph(),
+        weak_area: faker.lorem.sentence(),
+        preference: faker.lorem.sentence(),
+        expectations: faker.lorem.sentence(),
+        user_id: 7, // Pick a random user ID
+    
+    });
+
     return knex('students').insert(students);
 };

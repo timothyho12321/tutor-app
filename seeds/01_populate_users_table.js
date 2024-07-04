@@ -24,12 +24,24 @@ exports.seed = function(knex) {
         last_name: "Chua",
         dob: faker.date.past(),
         username: "sam",
-        password: "abc123",
+        password: "abc",
         address: faker.address.streetAddress(),
         handphone_num: faker.phone.phoneNumber(),
         email: faker.internet.email(),
         role: 'teacher'
-    })
+    });
+
+    users.push({
+        first_name: "Vera",
+        last_name: "Tan",
+        dob: faker.date.past(),
+        username: "vera",
+        password: "abc",
+        address: faker.address.streetAddress(),
+        handphone_num: faker.phone.phoneNumber(),
+        email: faker.internet.email(),
+        role: 'student'
+    });
 
     return knex('users').insert(users);
 };

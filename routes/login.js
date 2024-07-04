@@ -8,6 +8,7 @@ const Lesson = require('../models/Lesson');
 const SubjectTeacher = require('../models/Subject Teacher');
 const Subject = require('../models/Subject');
 const Student = require('../models/Student');
+const SubjectStudent = require('../models/Subject Student');
 
 //const knexConfig = require('knex');
 // const knexConfig = require('../knexfile'); // adjust the path to your knexfile.js
@@ -101,13 +102,19 @@ class LoginController {
             }
 
             let subjectsStudentSave = [];
+            let subjectsStudentId = [];
             if (student) {
-                let subjectsStudent = await SubjectTeacher.findAllByTeacherId(teacher.id);
-                for (let eachSubjectTeacher of subjectsStudent) {
-                    let subjectNameSave = await Subject.query().findOne({ id: eachSubjectTeacher.subject_id });
+                let subjectsStudent = await SubjectStudent.findAllByStudentId(student.id);
+                for (let eachSubjectStudent of subjectsStudent) {
+                    let subjectNameSave = await Subject.query().findOne({ id: eachSubjectStudent.subject_id });
                     subjectsStudentSave.push(subjectNameSave.name);
                 }
+                for (let eachSubjectStudentId of subjectsStudent) {
+                    subjectsStudentId.push(eachSubjectStudentId.subject_id);
+                }
             }
+            // console.log("ranger",subjectsStudentId);
+            res.cookie('subjects_student_id', subjectsStudentId, { httpOnly: true });
             res.cookie('subjects_student', subjectsStudentSave, { httpOnly: true });
 
             let events = [...this.mapLessonsToEvents(lessons), ...this.mapBookingsToEvents(insertBookings)];

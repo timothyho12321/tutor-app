@@ -14,6 +14,11 @@ class SubjectTeacher extends Model {
   static async findAllByTeacherId(teacherId){
     return await this.query().where('teacher_id', teacherId);
   } 
+
+  
+  static async findAllBySubjectId(subjectId){
+    return await this.query().where('subject_id', subjectId);
+  } 
 }
 
 module.exports = SubjectTeacher;

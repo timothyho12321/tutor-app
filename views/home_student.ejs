@@ -25,7 +25,7 @@
     
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Teacher</a>
+        <a class="navbar-brand" href="#">Student</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -37,10 +37,10 @@
                     <a class="nav-link" href="/set-profile">Set Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/lesson/add-lesson">Set Lesson</a>
+                    <a class="nav-link" href="/student-lesson/add-student-time">Set Student Free Time</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/booking/add-booking">Set Booking</a>
+                    <a class="nav-link" href="/student-booking/add-student-booking">Available Classes by Subject</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/paid-lesson">Paid Lesson</a>
@@ -98,11 +98,11 @@
                 dayClick: function(date, allDay, jsEvent, view) {
                     // Assuming you have the teacher's ID and subject stored in variables
                     // var teacherId = '123'; // Example teacher ID
-                    var teacherId = '<%= teacherId %>';
+                    var studentId = '<%= studentId %>';
     
 
                     // Construct the URL for the lesson addition page with query parameters
-                    var url = `/lesson/add-lesson?date=${date.format()}&teacherId=${teacherId}`;
+                    var url = `/lesson/add-lesson?date=${date.format()}&studentId=${studentId}`;
 
                     // Open the new page in a new tab/window
                     window.open(url, '_blank');

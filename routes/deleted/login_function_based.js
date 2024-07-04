@@ -1,12 +1,12 @@
 const express = require('express');
 const path = require('path'); 
 const router = express.Router();
-const User = require('../models/User'); // Assuming you have a User model defined
-const Teacher = require('../models/Teacher');
-const Booking = require('../models/Booking');
-const Lesson = require('../models/Lesson');
-const SubjectTeacher = require('../models/Subject Teacher');
-const Subject = require('../models/Subject');
+const User = require('../../models/User'); // Assuming you have a User model defined
+const Teacher = require('../../models/Teacher');
+const Booking = require('../../models/Booking');
+const Lesson = require('../../models/Lesson');
+const SubjectTeacher = require('../../models/Subject Teacher');
+const Subject = require('../../models/Subject');
 
 //const knexConfig = require('knex');
 // const knexConfig = require('../knexfile'); // adjust the path to your knexfile.js

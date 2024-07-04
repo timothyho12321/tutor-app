@@ -1,10 +1,10 @@
 const express = require('express');
 const path = require('path'); 
 const router = express.Router();
-const User = require('../models/User'); // Assuming you have a User model defined
-const Teacher = require('../models/Teacher');
-const Booking = require('../models/Booking');
-const Lesson = require('../models/Lesson');
+const User = require('../../models/User'); // Assuming you have a User model defined
+const Teacher = require('../../models/Teacher');
+const Booking = require('../../models/Booking');
+const Lesson = require('../../models/Lesson');
 
 
 router.get('/add-lesson', async (req, res) => {
