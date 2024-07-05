@@ -10,6 +10,14 @@ exports.seed = async function(knex) {
     const lessons = await knex('lessons').select('id');
     const lessonIds = lessons.map(lesson => lesson.id);
 
+    const subjects = await knex('subjects').select('id');
+    const subjectIds = subjects.map(subject => subject.id);
+
+    const teachers = await knex('teachers').select('id');
+    const teacherIds = teachers.map(teacher => teacher.id);
+
+    const students = await knex('students').select('id');
+    const studentIds = students.map(student => student.id);
     // Check if there are enough lesson IDs
     if (lessonIds.length < 5) {
         throw new Error('Not enough lessons in the Lesson table. Please make sure there are at least 5 lessons before running this seed script.');
@@ -49,6 +57,10 @@ exports.seed = async function(knex) {
         payor: faker.name.findName(),
         feedback: faker.lorem.paragraph(),
         lesson_id: faker.random.arrayElement(lessonIds), // Pick a random lesson ID
+        subject_id: faker.random.arrayElement(subjectIds), // Pick a random subject ID
+        teacher_id: faker.random.arrayElement(teacherIds), // Pick a random subject ID
+        student_id: faker.random.arrayElement(studentIds), // Pick a random subject ID
+        
         };
     });
 

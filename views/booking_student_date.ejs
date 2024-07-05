@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Lesson Slot</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .center-card {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+        }
+        .card {
+            height: auto;
+            width: 50%;
+        }
+        table {
+        width: 40%;
+        border-collapse: separate;
+        border-spacing: 0 2px; /* Adjust the 15px to increase or decrease space between rows */
+        }
+        th, td {
+            text-align: left;
+            padding: 4px; /* Adjust padding for spacing within cells */
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 85%; margin: auto;" class="mt-3">
+        <h1>Booking Lesson Slot </h1>
+        <h3>Teacher: <%= teacherNameName %></h3>
+        <h3>Subject: <%= subjectName %></h3>
+            <form action="/student-booking/submit-student-booking" method="post">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Date</th>
+                            <th>Time Start</th>
+                            <th>Time End</th>
+                            <th>Mode</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% allLessonsByTeacherAndSubject.forEach(lesson => { %>
+                            <tr>
+                                <td> 
+                                    <input type="radio" name="selectedLessonId" value="<%= lesson.id %>">
+                                </td>
+                                <td>    <%= new Date(lesson.date).toDateString() %></td>
+                                <td>    <%= lesson.time_start %></td>
+                                <td>    <%= lesson.time_end %></td>
+                                <td>    <%= lesson.mode %></td>
+                            </tr>
+                            <input type="hidden" name="teacherId" value="<%= teacherId %>">
+                                
+                        <% }); %>
+                     </tbody>
+                </table>
+            <input type="submit" class="btn btn-success"  value="Book Selected Lesson">
+            <a href="../login/success" class="btn btn-primary">Back to calendar</a>
+        </form>
+
+    </div>
+    
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

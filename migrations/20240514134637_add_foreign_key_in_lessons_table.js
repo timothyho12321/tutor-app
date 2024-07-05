@@ -4,7 +4,7 @@
  */
 exports.up = function(knex) {
     return knex.schema.alterTable('lessons', function(table) {
-        table.integer('subject_id').unsigned().notNullable();
+        table.integer('subject_id').unsigned();//.notNullable();
         table.foreign('subject_id').references('id').inTable('subjects');
     });
 };

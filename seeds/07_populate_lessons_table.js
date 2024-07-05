@@ -68,7 +68,7 @@ exports.seed = async function(knex) {
         mode: faker.random.arrayElement(['Online', 'Offline']),
         type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
         status: faker.random.arrayElement(['Open', 'Matched']),
-        is_hide: faker.datatype.boolean() ? 1 : 0,
+        is_hide: 0,
         rate: faker.datatype.number({min: 50, max: 200}),
         pax: faker.datatype.number({min: 1, max: 20}),
         address: faker.address.streetAddress(),
@@ -90,7 +90,7 @@ exports.seed = async function(knex) {
         type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
         // status: faker.random.arrayElement(['Open', 'Matched']),
         status: "Open",
-        is_hide: faker.datatype.boolean() ? 1 : 0,
+        is_hide: 0,
         rate: faker.datatype.number({min: 50, max: 200}),
         pax: faker.datatype.number({min: 1, max: 20}),
         address: faker.address.streetAddress(),
@@ -112,7 +112,7 @@ exports.seed = async function(knex) {
         type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
         // status: faker.random.arrayElement(['Open', 'Matched']),
         status: "Open",
-        is_hide: faker.datatype.boolean() ? 1 : 0,
+        is_hide: 0,
         rate: faker.datatype.number({min: 50, max: 200}),
         pax: faker.datatype.number({min: 1, max: 20}),
         address: faker.address.streetAddress(),
@@ -120,6 +120,29 @@ exports.seed = async function(knex) {
         subject_id: 2, // Pick a random subject ID
         teacher_id: 5, // Pick a random subject ID
         student_id: null, // Pick a random subject ID
+        
+    })
+    // student lesson
+    lessons.push({
+        name: 'Student Music',
+        day: faker.date.weekday(),
+        // date: faker.date.future(),
+        date: "2024-07-16",
+        time_start: "16:00",
+        time_end: "17:00",
+        duration:  60,
+        mode: faker.random.arrayElement(['Online', 'Offline']),
+        type: faker.random.arrayElement(['Lecture', 'Tutorial', 'Lab']),
+        // status: faker.random.arrayElement(['Open', 'Matched']),
+        status: "Open",
+        is_hide: 0,
+        rate: faker.datatype.number({min: 50, max: 200}),
+        pax: faker.datatype.number({min: 1, max: 20}),
+        address: faker.address.streetAddress(),
+        postal_code: faker.address.zipCode(),
+        subject_id: 5, // Pick a random subject ID
+        teacher_id: null, // Pick a random subject ID
+        student_id: 6, // Pick a random subject ID
         
     })
 
